@@ -28,7 +28,4 @@ No installation required! Just save the HTML file and open it in any modern web 
 2. Save it as `text_splitter.html` on your computer.
 3. Open the file in a web browser to use the tool.
 
-## Example
-
-Imagine you have this input text:
 
