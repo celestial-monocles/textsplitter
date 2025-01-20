@@ -36,46 +36,36 @@
     }
     button {
       width: auto;
-      background-color: #D482DD; /* Set button color */
-      border: none;
+      background-color: #D482DD; /* Updated button color */
       color: white;
-      padding: 10px 20px;
-      font-size: 1em;
+      border: none;
+      padding: 10px;
       cursor: pointer;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-      height: 50px; /* Set button height */
     }
     button:hover {
-      background-color: #bb66b5; /* Hover effect */
+      background-color: #DFB4DA; /* Hover effect for button */
     }
     hr {
       background-color: white;
       margin-top: 2em;
       margin-bottom: 2em;
     }
-	h1,
-	h2 {
-	  color: #DFB4DA;
-	 }
 
-    /* Updated styles for placing number of splits and button on same line */
+    /* New styles for placing number of splits and button on same line */
     .split-group {
       display: flex;
-      flex-direction: row;
       align-items: center;
-      gap: 5px; /* Reduced gap */
-      justify-content: center;
+      gap: 10px;
     }
-    .split-group label {
-      width: auto; /* Adjust label width */
-      margin-right: 10px; /* Reduced margin to make it closer to input */
-    }
-    .split-group input {
+	.split-group input {
       width: auto;
-      height: 25px; /* Set input height to match the button height */
-      padding: 10px;
+      margin: 0;
+	  height: 30px;
 	  text-align: center;
+    }
+    .split-group button {
+      width: auto;
+      margin: 0;
     }
 
     /* Output container styles */
@@ -110,6 +100,12 @@
         width: 100%;
       }
     }
+
+    h1,
+	h2 {
+      color: #DFB4DA; /* Updated h2 color */
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -128,7 +124,7 @@
 
   <hr>
 
-  <h2 style="text-align: center;">Split Text Outputs</h2>
+  <h2>Split Text Outputs</h2>
   <div id="outputContainer"></div>
 
   <script>
