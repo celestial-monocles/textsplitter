@@ -5,46 +5,128 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Text Splitter</title>
   <style>
+    /* General styles for larger screens */
     body {
-      font-family: Arial, sans-serif;
-	  background-color:#525253;
+      font-family: Georgia, sans-serif;
+      background-color: #525253;
       margin: 50px;
-	  color: white;
+      color: white;
     }
-    textarea {
-      width: 100%;
-      margin: 10px 0;
-    }
-	input {
-      width: 30%;
-      margin: 10px 0;
-    }
-	button {
-      width: auto;
-      margin: 10px 0;
-    }
-    .output-container {
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       margin-bottom: 20px;
     }
+    label {
+      margin-bottom: 10px;
+      font-size: 1.2em;
+      text-align: left;
+      width: 60%;
+    }
+    textarea,
+    input,
+    button {
+      width: 60%;
+      margin: 10px 0;
+      display: block;
+    }
+    textarea {
+      resize: vertical;
+    }
+    button {
+      width: auto;
+      background-color: #D482DD; /* Set button color */
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      height: 50px; /* Set button height */
+    }
+    button:hover {
+      background-color: #bb66b5; /* Hover effect */
+    }
+    hr {
+      background-color: white;
+      margin-top: 2em;
+      margin-bottom: 2em;
+    }
+	h2 {
+	  color: #DFB4DA;
+	 }
+
+    /* Updated styles for placing number of splits and button on same line */
+    .split-group {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 5px; /* Reduced gap */
+      justify-content: center;
+    }
+    .split-group label {
+      width: auto; /* Adjust label width */
+      margin-right: 10px; /* Reduced margin to make it closer to input */
+    }
+    .split-group input {
+      width: auto;
+      height: 25px; /* Set input height to match the button height */
+      padding: 10px;
+    }
+
+    /* Output container styles */
+    #outputContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .output-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 60%;
+    }
     .output-box {
-      margin-bottom: 5px;
+      width: 100%;
+      resize: vertical;
+      margin-bottom: 10px;
     }
     .copy-button {
-      width: auto;
+      align-self: flex-end;
+    }
+
+    /* Mobile-specific styles */
+    @media (max-width: 768px) {
+      label,
+      textarea,
+      input,
+      button,
+      .output-container {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Text Splitter</h1>
-  <label for="inputText">Paste your text here:</label>
-  <textarea id="inputText" rows="10"></textarea>
+  <h1 style="text-align: center;">Text Splitter</h1>
+  <div class="form-group">
+    <label for="inputText">Paste your text here:</label>
+    <textarea id="inputText" rows="10"></textarea>
+  </div>
 
-  <label for="splitNumber">Enter number of splits:</label>
-  <input id="splitNumber" type="number" min="1" placeholder="e.g., 3">
+  <!-- Updated form group for number of splits and button on the same line -->
+  <div class="form-group split-group">
+    <label for="splitNumber">Enter number of splits:</label>
+    <input id="splitNumber" type="number" min="1" placeholder="e.g., 3">
+    <button onclick="splitText()">Split Text</button>
+  </div>
 
-  <button onclick="splitText()">Split Text</button>
+  <hr>
 
-  <h2>Split Text Outputs</h2>
+  <h2 style="text-align: center;">Split Text Outputs</h2>
   <div id="outputContainer"></div>
 
   <script>
@@ -84,7 +166,7 @@
         const copyButton = document.createElement('button');
         copyButton.className = 'copy-button';
         copyButton.textContent = 'Copy Text';
-        copyButton.onclick = () => copyToClipboard(chunk);
+        copyButton.onclick = () => copyToClipboard(copyButton, chunk);
 
         // Append the text box and button to the container
         container.appendChild(textBox);
@@ -95,9 +177,12 @@
       }
     }
 
-    function copyToClipboard(text) {
+    function copyToClipboard(button, text) {
       navigator.clipboard.writeText(text).then(() => {
-        alert('Text copied to clipboard!');
+        button.textContent = 'Copied!';
+        setTimeout(() => {
+          button.textContent = 'Copy Text';
+        }, 2000);
       }).catch(err => {
         alert('Failed to copy text: ' + err);
       });
