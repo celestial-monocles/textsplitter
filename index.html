@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Text Splitter</title>
   <style>
-    /* General styles for larger screens */
     body {
       font-family: Georgia, sans-serif;
       background-color: #525253;
@@ -20,9 +19,9 @@
     }
     label {
       margin-bottom: 10px;
-      font-size: 1.2em;
-      text-align: left;
-      width: 60%;
+      font-size: 1.0em;
+      text-align: center;
+      width: 100%;
     }
     textarea,
     input,
@@ -36,14 +35,14 @@
     }
     button {
       width: auto;
-      background-color: #D482DD; /* Updated button color */
+      background-color: #D482DD;
       color: white;
       border: none;
       padding: 10px;
       cursor: pointer;
     }
     button:hover {
-      background-color: #DFB4DA; /* Hover effect for button */
+      background-color: #DFB4DA;
     }
     hr {
       background-color: white;
@@ -51,12 +50,23 @@
       margin-bottom: 2em;
     }
 
-    /* New styles for placing number of splits and button on same line */
     .split-group {
       display: flex;
+      flex-direction: column;
       align-items: center;
       gap: 10px;
     }
+    .split-group .row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+	.split-group label[for="lineGap"] {
+	  font-size: 0.8em; /* Adjust this value to your desired font size */
+	  height: 7px;
+	}
+
     .split-group input {
       width: auto;
       margin: 0;
@@ -69,7 +79,6 @@
       font-weight: bold;
     }
 
-    /* Output container styles */
     #outputContainer {
       display: flex;
       flex-direction: column;
@@ -93,7 +102,6 @@
       font-weight: bold;
     }
 
-    /* Mobile-specific styles */
     @media (max-width: 768px) {
       label,
       textarea,
@@ -106,7 +114,7 @@
 
     h1,
     h2 {
-      color: #DFB4DA; /* Updated h2 color */
+      color: #DFB4DA;
       text-align: center;
     }
   </style>
@@ -118,10 +126,17 @@
     <textarea id="inputText" rows="10"></textarea>
   </div>
 
-  <!-- Updated form group for number of splits and button on the same line -->
   <div class="form-group split-group">
-    <label for="splitNumber">Enter number of splits:</label>
+    <div class="row">
+      <label for="splitNumber">Enter number of splits:</label>
+    </div>
     <input id="splitNumber" type="number" min="1" placeholder="2">
+
+    <div class="row">
+      <label for="lineGap">Line Gaps</label>
+      <input id="lineGap" type="checkbox">
+    </div>
+
     <button onclick="splitText()">Split Text</button>
   </div>
 
@@ -134,15 +149,13 @@
     function splitText() {
       const text = document.getElementById('inputText').value.trim();
       let numSplits = parseInt(document.getElementById('splitNumber').value);
+      const lineGap = document.getElementById('lineGap').checked;
 
-      // Set default value if numSplits is not provided or invalid
       if (isNaN(numSplits) || numSplits < 1) {
         numSplits = 2;
       }
 
       const outputContainer = document.getElementById('outputContainer');
-
-      // Clear previous outputs
       outputContainer.innerHTML = '';
 
       if (!text) {
@@ -155,31 +168,25 @@
       let start = 0;
 
       for (let i = 0; i < numSplits; i++) {
-        const chunk = lines.slice(start, start + chunkSize).join('\n');
+        const chunk = lines.slice(start, start + chunkSize).join(lineGap ? '\n\n' : '\n');
         start += chunkSize;
 
-        // Create a container for the text box and button
         const container = document.createElement('div');
         container.className = 'output-container';
 
-        // Create a text box for each split
         const textBox = document.createElement('textarea');
         textBox.className = 'output-box';
         textBox.rows = 10;
         textBox.readOnly = true;
         textBox.value = chunk;
 
-        // Create a copy button
         const copyButton = document.createElement('button');
         copyButton.className = 'copy-button';
         copyButton.textContent = 'Copy Text';
         copyButton.onclick = () => copyToClipboard(copyButton, chunk);
 
-        // Append the text box and button to the container
         container.appendChild(textBox);
         container.appendChild(copyButton);
-
-        // Append the container to the output area
         outputContainer.appendChild(container);
       }
     }
